@@ -1,8 +1,10 @@
 import React,{useState,useContext} from 'react' ;
 import {PostContext} from './PostContext' ;
-import {FormControl,Button,TextField} from '@material-ui/core' ;
+import {Grid,FormControl,Button,TextField} from '@material-ui/core' ;
 import Snackbar from '@material-ui/core/Snackbar' ;
 import {Link} from 'react-router-dom' ;
+import firebase from 'firebase'
+import {v4 as uuid} from 'uuid' ; 
 
 const AddPost = ()=>{
     const [title,setTitle] = useState('') ;
@@ -20,7 +22,10 @@ const AddPost = ()=>{
     
     const AddPost = (e) =>{
         e.preventDefault() ; 
-        setPosts(prevPosts => [{title:title,body:body,id:posts.length+1},...prevPosts]);
+        const db = firebase.firestore() ; 
+        const uid = uuid() ; 
+        db.collection('posts').doc(uid).set({title:title,body:body,id:uid,liked:0,disliked:0}) ; 
+        setPosts(prevPosts => [{title:title,body:body,id:uid},...prevPosts]);
         setTitle("") ;
         setBody("") ;
     }
@@ -28,7 +33,7 @@ const AddPost = ()=>{
         setSubmitted(true) ;
     }
     return (
-        <div>
+        <Grid>
         <form  align="center" onSubmit={AddPost}>
             <h2><u>Add Post</u></h2>
             <TextField label="Post Title" name="title" variant="filled" value = {title} onChange = {updateTitle}/>
@@ -41,7 +46,7 @@ const AddPost = ()=>{
             <Snackbar autoHideDuration={2000} open={submitted} onClose = {()=>setSubmitted(false)} message="Succesfully Submitted!"/>
         
         </form>
-        </div>
+        </Grid>
     )
 }
 export default AddPost

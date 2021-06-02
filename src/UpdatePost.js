@@ -3,19 +3,22 @@ import {PostContext} from './PostContext' ;
 import {TextField,Button} from "@material-ui/core";
 import {Link,useHistory} from "react-router-dom";
 import Snackbar from '@material-ui/core/Snackbar' ;
+import firebase from 'firebase' ; 
 
 const UpdatePost = (props)=>{
     const [posts,setPosts] = useContext(PostContext) ;
     const [title,setTitle] = useState('');
     const [body,setBody] = useState('') ;
     const [submitted,setSubmitted] = useState(false) ;
+    const user = firebase.auth().currentUser ; 
 
     const [selectedPost,setSelectedPost] = useState({
         id:0,
         title:'',
         body:''
     })
-        const currentPostId = parseInt(props.match.params.id) ;
+        const db = firebase.firestore() ; 
+        const currentPostId = props.match.params.id ;
         useEffect(()=>{
             const postId = currentPostId ;
             const selectedPost = posts.find(post=>post.id===postId) ;
@@ -36,6 +39,10 @@ const UpdatePost = (props)=>{
                 {
                     post.title = title ;
                     post.body = body ; 
+                    post.id = currentPostId ; 
+                    db.collection('posts').doc(currentPostId).set({title:title,body:body,id:currentPostId}) ;
+                    db.collection('users').doc(user.uid).collection('likedPosts').doc(currentPostId).set({title:title,body:body,id:currentPostId},{merge:true}) 
+                    db.collection('users').doc(user.uid).collection('dislikedPosts').doc(currentPostId).set({title:title,body:body,id:currentPostId},{merge:true})
                 }
             }
                 );

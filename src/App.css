@@ -1,9 +1,10 @@
-body{
-  padding-top: 68px;
-  background-color: #add8e6;
-}
 .search{
   top: 20px;
+}
+.grid-login{
+  display:flex ; 
+  align-items: center;
+  justify-content: center;
 }
 .App {
   text-align: center;
@@ -11,6 +12,14 @@ body{
 .box-post{
   margin-top: 25px;
   margin-bottom: 20px;
+  padding: 10px;
+}
+.login-box{
+  border-radius: 15px ; 
+}
+.box-title{
+  justify-content: space-between;
+  margin-top: 20px;
 }
 .App-logo {
   height: 40vmin;
@@ -35,7 +44,7 @@ body{
 }
 
 .App-link {
-  color: #61dafb;
+  color: #0a232b;
 }
 
 @keyframes App-logo-spin {
@@ -46,3 +55,4 @@ body{
     transform: rotate(360deg);
   }
 }
+

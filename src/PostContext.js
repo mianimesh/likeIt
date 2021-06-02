@@ -1,14 +1,21 @@
-import React,{useState,createContext} from 'react' ;
+import React,{useState,createContext, useEffect} from 'react' ;
+import {db} from './firebase' ; 
 
-import postsdata from './postsdata.json' ;
 
-export const PostContext = createContext() ; 
+const PostContext = createContext() ; 
 
 export const PostProvider = (props)=>{
-    const [posts,setPosts] = useState(postsdata) ;
+    const [posts,setPosts] = useState(
+        []);
+        useEffect(()=>{
+            db.collection('posts').onSnapshot(snapshot=>{
+                setPosts(snapshot.docs.map(doc=>doc.data()))
+            })
+        },[])
     return (
         <PostContext.Provider value={[posts,setPosts]}>
             {props.children}
         </PostContext.Provider>
     );
 }
+export {PostContext} ; 

@@ -12,7 +12,7 @@ const Search = ()=>{
         setSearchTerm(e.target.value) ;
     }
     return (
-        <Box>
+        <Box textAlign='center'>
         <TextField  color="secondary"className="search" fullWidth={true} label="Search Post" variant="outlined" onChange = {handleChange} />
         <Box>
         {
@@ -27,7 +27,7 @@ const Search = ()=>{
         ))
         }
         </Box>
-        <Button variant="contained" color="primary" component={Link} to="/" >Back</Button>
+        <Button style={{marginTop:30}} variant="contained" color="primary" component={Link} to="/" >Back</Button>
         </Box>
     );
 }
